@@ -1,0 +1,5 @@
+Energies and Magnetization as function of temperature
+Temperature - E - M - C_V - X
+2.2   -15460.9   7805.98   7.15685   37.8596
+2.25   -14635.5   6753.77   10.2568   78.311
+2.3   -13472.1   3253.04   11.0549   326.026
