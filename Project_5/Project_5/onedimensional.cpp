@@ -25,16 +25,12 @@ void Forward_Euler(int, double, double*, double*);
 void Backward_Euler(int, double, double*, double*);
 void Crank_Nicolson(int, double, double*);
 
-void twodimensional(int, int, double, double**, double**);
-void initialize_matrix(int, int, double**);
-void print_to_file_2D(string, double**, int, int, double);
-
 
 int main(int argc, const char * argv[]) {
     string outfile_name;
     
     int L = 1;
-    int x_steps = 100; int y_steps = x_steps;
+    int x_steps = 100;
     double dx = (double)L/x_steps; double dt = 0.5*dx*dx;
     
     // dx = 0.1 > dt = 0.005
@@ -49,7 +45,7 @@ int main(int argc, const char * argv[]) {
     
     // Decide method
     cout << "Please give wanted method number:" << endl;
-    cout << "1 = Forward Euler, 2 = Backward Euler, 3 = Crank-Nicolson, 4 = Two-dimensional" << endl;
+    cout << "1 = Forward Euler, 2 = Backward Euler, 3 = Crank-Nicolson" << endl;
     int method;
     cin >> method;
     
@@ -70,80 +66,22 @@ int main(int argc, const char * argv[]) {
             Crank_Nicolson(x_steps+1, alpha, u);
             outfile_name = "C-N";
         }
-        else if (method == 4){
-            delete [] u; delete [] u_new;
-            double **u; u = (double**) matrix(x_steps+1, y_steps+1, sizeof(double));
-            double **u_new; u_new = (double**) matrix(x_steps+1, y_steps+1, sizeof(double));
-            
-            initialize_matrix(x_steps+1, y_steps+1, u); initialize_matrix(x_steps+1, y_steps+1, u_new);
-            
-            twodimensional(x_steps+1, y_steps+1, alpha, u, u_new);
-            outfile_name = "2-D";
-        }
-        
         
         // Print to file
-        if (method==1 || method==2 || method==3){
-            if (j==0.05*time_steps){
-                print_to_file(outfile_name, u, x_steps, (double)j/time_steps);
-            }
-            else if (j==0.5*time_steps){
-                print_to_file(outfile_name, u, x_steps, (double)j/time_steps);
-            }
+        if (j==0.05*time_steps){
+            print_to_file(outfile_name, u, x_steps, (double)j/time_steps);
         }
-        else if (method==4){
-            if (j==0.05*time_steps){
-                print_to_file_2D(outfile_name, &u, x_steps, y_steps, (double)j/time_steps);
-            }
-            else if (j==0.5*time_steps){
-                print_to_file_2D(outfile_name, &u, x_steps, y_steps, (double)j/time_steps);
-            }
+        else if (j==0.5*time_steps){
+            print_to_file(outfile_name, u, x_steps, (double)j/time_steps);
         }
     }
     
-    // Freeing memory
-    if (method==1 || method==2 || method==3) {delete [] u; delete [] u_new;}
-    else if (method==4) {free_matrix((void **) u); free_matrix((void **) u_new);}
+    
+    delete [] u;
+    delete [] u_new;
     
     return 0;
 }
-
-void twodimensional(int Number_of_XSteps, int Number_of_YSteps, double alpha, double **u, double **u_new){
-    // u[i, j, k+1] = u[i, j, k] + alpha*(u[i+1,j,k] + u[i-1,j,k] + u[i,j+1,k] + u[i,j-1,k] - 4u[i,j,k])
-    for(int i=0; i<Number_of_XSteps; i++){
-        for(int j=0; j<Number_of_YSteps; j++){
-            u_new[i][j] = u[i+1][j] + alpha*(u[i+1][j] + u[i-1][j] + u[i][j+1] + u[i][j-1] - 4*u[i][j]);
-        }
-    }
-}
-
-void initialize_matrix(int nx, int ny, double **A){
-    for(int i=0; i<nx; i++){
-        for(int j=0; j<ny; j++){
-            A[i][j] = 0;
-        }
-    }
-}
-
-void print_to_file_2D(string outfile_name, double **u, int nx, int ny, double t){
-    string outfile = outfile_name;
-    outfile.append("_t="); outfile.append(to_string(t));
-    outfile.append("_dx="); outfile.append(to_string(1.0/nx));
-    outfile.append(".txt");
-    ofile.open(outfile);
-    ofile << setiosflags(ios::showpoint | ios::uppercase);
-    for(int i=0; i<=nx; i++){
-        ofile << (double) i/nx << "  ";
-        for(int j=0; j<=ny; j++){
-            ofile << setprecision(8) << u[i][j] << "  ";
-        }
-        ofile << endl;
-    }
-    ofile.close();
-}
-
-
-
 
 
 
