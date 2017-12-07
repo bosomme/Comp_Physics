@@ -26,7 +26,7 @@ void Backward_Euler(int, double, double*, double*);
 void Crank_Nicolson(int, double, double*);
 
 void twodimensional(int, int, double, double**, double**);
-void initialize_matrix(int, int, double**);
+void initialize_matrix(int, double, double**);
 void print_to_file_2D(string, double**, int, int, double);
 
 
@@ -71,32 +71,32 @@ int main(int argc, const char * argv[]) {
             outfile_name = "C-N";
         }
         else if (method == 4){
-            delete [] u; delete [] u_new;
+            // delete [] u; delete [] u_new;
             double **u; u = (double**) matrix(x_steps+1, y_steps+1, sizeof(double));
             double **u_new; u_new = (double**) matrix(x_steps+1, y_steps+1, sizeof(double));
             
-            initialize_matrix(x_steps+1, y_steps+1, u); initialize_matrix(x_steps+1, y_steps+1, u_new);
+            initialize_matrix(x_steps+1, dx, u); initialize_matrix(x_steps+1, dx, u_new);
             
             twodimensional(x_steps+1, y_steps+1, alpha, u, u_new);
             outfile_name = "2-D";
+            
+            // Print to file (Twodimensional)
+            if (j==0.05*time_steps){
+                print_to_file_2D(outfile_name, u, x_steps, y_steps, (double)j/time_steps);
+            }
+            else if (j==0.5*time_steps){
+                print_to_file_2D(outfile_name, u, x_steps, y_steps, (double)j/time_steps);
+            }
         }
         
         
-        // Print to file
+        // Print to file (Onedimensional)
         if (method==1 || method==2 || method==3){
             if (j==0.05*time_steps){
                 print_to_file(outfile_name, u, x_steps, (double)j/time_steps);
             }
             else if (j==0.5*time_steps){
                 print_to_file(outfile_name, u, x_steps, (double)j/time_steps);
-            }
-        }
-        else if (method==4){
-            if (j==0.05*time_steps){
-                print_to_file_2D(outfile_name, &u, x_steps, y_steps, (double)j/time_steps);
-            }
-            else if (j==0.5*time_steps){
-                print_to_file_2D(outfile_name, &u, x_steps, y_steps, (double)j/time_steps);
             }
         }
     }
@@ -110,17 +110,27 @@ int main(int argc, const char * argv[]) {
 
 void twodimensional(int Number_of_XSteps, int Number_of_YSteps, double alpha, double **u, double **u_new){
     // u[i, j, k+1] = u[i, j, k] + alpha*(u[i+1,j,k] + u[i-1,j,k] + u[i,j+1,k] + u[i,j-1,k] - 4u[i,j,k])
-    for(int i=0; i<Number_of_XSteps; i++){
-        for(int j=0; j<Number_of_YSteps; j++){
+    for(int i=1; i<Number_of_XSteps-1; i++){
+        for(int j=1; j<Number_of_YSteps-1; j++){
             u_new[i][j] = u[i+1][j] + alpha*(u[i+1][j] + u[i-1][j] + u[i][j+1] + u[i][j-1] - 4*u[i][j]);
         }
     }
+    u = u_new;
 }
 
-void initialize_matrix(int nx, int ny, double **A){
-    for(int i=0; i<nx; i++){
-        for(int j=0; j<ny; j++){
-            A[i][j] = 0;
+
+void initialize_matrix(int n, double dx, double **A){
+    double pi = M_PI;
+    double x; double y;
+    for(int i=0; i<n; i++){
+        for(int j=0; j<n; j++){
+            if(i == 0 || i == n-1 || j == 0 || j == n-1){
+                A[i][j] = 0;
+            }
+            else{
+                x = i*dx; y = j*dx;
+                A[i][j] = sin(pi*x)*sin(pi*y);
+            }
         }
     }
 }
