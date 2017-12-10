@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7206E7A51FD07551008D4C6D /* lib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7206E7A41FD07551008D4C6D /* lib.cpp */; };
-		72CD83601FD07507009D18A8 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 72CD835F1FD07507009D18A8 /* main.cpp */; };
+		72B65C301FDC86D50086997C /* twodim.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 72B65C2E1FDC86D50086997C /* twodim.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,8 +26,8 @@
 /* Begin PBXFileReference section */
 		7206E7A31FD07551008D4C6D /* lib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lib.h; path = "../../../Computational-Physics/Project_2/Project 2/lib.h"; sourceTree = "<group>"; };
 		7206E7A41FD07551008D4C6D /* lib.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lib.cpp; path = "../../../Computational-Physics/Project_2/Project 2/lib.cpp"; sourceTree = "<group>"; };
+		72B65C2E1FDC86D50086997C /* twodim.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = twodim.cpp; sourceTree = "<group>"; };
 		72CD835C1FD07507009D18A8 /* Project_5 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Project_5; sourceTree = BUILT_PRODUCTS_DIR; };
-		72CD835F1FD07507009D18A8 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +60,7 @@
 		72CD835E1FD07507009D18A8 /* Project_5 */ = {
 			isa = PBXGroup;
 			children = (
-				72CD835F1FD07507009D18A8 /* main.cpp */,
+				72B65C2E1FDC86D50086997C /* twodim.cpp */,
 				7206E7A41FD07551008D4C6D /* lib.cpp */,
 				7206E7A31FD07551008D4C6D /* lib.h */,
 			);
@@ -124,7 +124,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				72CD83601FD07507009D18A8 /* main.cpp in Sources */,
+				72B65C301FDC86D50086997C /* twodim.cpp in Sources */,
 				7206E7A51FD07551008D4C6D /* lib.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

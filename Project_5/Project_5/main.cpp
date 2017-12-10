@@ -37,8 +37,8 @@ int main(int argc, const char * argv[]) {
     int x_steps = 100; int y_steps = x_steps;
     double dx = (double)L/x_steps; double dt = 0.5*dx*dx;
     
-    // dx = 0.1 > dt = 0.005
-    // dx = 0.01 > dt = 0.00005
+    // dx = 0.1 -> dt = 0.005
+    // dx = 0.01 -> dt = 0.00005
     
     int time_steps = 10*(floor(1/(dt*10)+0.1));
     double alpha = dt/(dx*dx); //alpha = 0.5?
@@ -108,14 +108,19 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 
-void twodimensional(int Number_of_XSteps, int Number_of_YSteps, double alpha, double **u, double **u_new){
+void twodimensional(int Number_of_XSteps, int Number_of_YSteps, double alpha, double** u, double** u_new){
     // u[i, j, k+1] = u[i, j, k] + alpha*(u[i+1,j,k] + u[i-1,j,k] + u[i,j+1,k] + u[i,j-1,k] - 4u[i,j,k])
     for(int i=1; i<Number_of_XSteps-1; i++){
         for(int j=1; j<Number_of_YSteps-1; j++){
             u_new[i][j] = u[i+1][j] + alpha*(u[i+1][j] + u[i-1][j] + u[i][j+1] + u[i][j-1] - 4*u[i][j]);
         }
     }
-    u = u_new;
+    u_new[0][0] = u_new[0][Number_of_XSteps-1] = u_new[Number_of_XSteps-1][0] = u_new[Number_of_XSteps-1][Number_of_XSteps-1] = 0;
+    for(int i=1; i<Number_of_XSteps; i++){
+        for(int j=1; j<Number_of_YSteps; j++){
+            u[i][j] = u_new[i][j];
+        }
+    }
 }
 
 

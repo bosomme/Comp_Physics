@@ -31,8 +31,8 @@ def read_from_file(filename):
     return X, U
 
 
-def analytical_solution(t):
-    nx = 100
+def analytical_solution(t, dx):
+    nx = 1./dx + 1
     X = np.linspace(0, 1, nx)
     x, y = np.meshgrid(X, X)
     
@@ -43,29 +43,48 @@ def analytical_solution(t):
 
 
 #Change this name!#
-filenames = ("2-D_t=0.050000_dx=0.100000.txt", "2-D_t=0.050000_dx=0.010000.txt", "2-D_t=0.500000_dx=0.100000.txt", "2-D_t=0.500000_dx=0.010000.txt")
+filenames = ("2-D_t=0.000000_dx=0.100000.txt", "2-D_t=0.000000_dx=0.010000.txt", "2-D_t=0.050000_dx=0.100000.txt", "2-D_t=0.050000_dx=0.010000.txt", "2-D_t=0.500000_dx=0.100000.txt", "2-D_t=0.500000_dx=0.010000.txt")
 #Change this name!#
 
-#legends = ('Forward Euler t=0.05','Forward Euler t=0.5','Backward Euler t=0.05','Backward Euler t=0.5','Crank-Nicolson t=0.05','Crank-Nicolson t=0.5', 'Analytical t=0.05', 'Analytical t=0.5')
 
-"""
-plt.subplot(111)
 for i in range(len(filenames)):
+    plt.figure(figsize=(5,4))
     X, U = read_from_file(filenames[i])
-    plt.imshow(U, extent=(0,1,0,1), cmap="gist_gray", vmin=0, vmax=1)
+    if i == 0:
+        X1, U1 = analytical_solution(0.0, 0.1)
+        UU = U - U1
+    if i == 1:
+        X1, U1 = analytical_solution(0.0, 0.01)
+        UU = U - U1
+    if i == 2:
+        X1, U1 = analytical_solution(0.05, 0.1)
+        UU = U - U1
+    if i == 3:
+        X1, U1 = analytical_solution(0.05, 0.01)
+        UU = U - U1
+    if i == 4:
+        X1, U1 = analytical_solution(0.5, 0.1)
+        UU = U - U1
+    if i == 5:
+        X1, U1 = analytical_solution(0.5, 0.01)
+        UU = U - U1
+    
+    plt.imshow(UU, extent=(0,1,0,1), cmap="gist_gray") #, vmin=0, vmax=1)
+    plt.colorbar()
+    plt.xlabel('x'); plt.ylabel('y')
+    plt.savefig('2D_error(%d).png' %i, dpi=300)
+    plt.show()
+
+
+
+
+"""
+for t in (0, 0.05, 0.5):
+    X, U = analytical_solution(t, 0.01)
+    plt.imshow(U, extent=(0,1,0,1), cmap="gist_gray") #, vmin=0, vmax=1
     plt.colorbar()
     plt.show()
 """
-
-
-
-
-for t in (0, 0.05, 0.5):
-    X, U = analytical_solution(t)
-    plt.imshow(U, extent=(0,1,0,1), cmap="gist_gray", vmin=0, vmax=1)
-    plt.colorbar()
-    plt.show()
-
 
 
 
